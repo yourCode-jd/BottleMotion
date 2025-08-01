@@ -38,20 +38,23 @@ document.querySelectorAll("a, button, .hover-target").forEach((el) => {
 // ====== Hero section ======
 
 window.addEventListener("load", () => {
+  window.history.scrollRestoration = "manual";
+  window.scrollTo(0, 0);
+  document.body.style.overflowY = "hidden";
   const tl = gsap.timeline({ defaults: { ease: "power2.out", duration: 1 } });
 
-  // ✨ Outer container fade in quickly
+  // Outer container fade in quickly
   tl.from(".max-w-screen-2xl", {
     opacity: 0,
     scale: 0.2,
     duration: 1.2,
   });
 
-  // 🧭 Header animation
+  // Header animation
   tl.from(".logo", { y: -30, opacity: 0, duration: 0.8 }, "-=0.8");
   tl.from("#Hamburger", { x: 20, opacity: 0, duration: 0.8 }, "-=0.6");
 
-  // 👈 Left section
+  // Left section
   tl.from(
     ".hero-heading",
     {
@@ -83,7 +86,7 @@ window.addEventListener("load", () => {
     "-=0.5"
   );
 
-  // 👉 Right section (feature list)
+  // Right section (feature list)
   tl.from(
     ".feature-item",
     {
@@ -95,7 +98,7 @@ window.addEventListener("load", () => {
     "-=0.2"
   );
 
-  // 🎯 Center image appears at the end, snappy and clean
+  // Center image appears at the end, snappy and clean
   tl.from(
     ".center-section",
     {
@@ -107,4 +110,106 @@ window.addEventListener("load", () => {
     },
     "-=0.3"
   );
+  setTimeout(() => {
+    document.body.style.overflowY = "auto";
+  }, 3500); // match your total animation duration
+});
+
+// ===== Why choose ======
+gsap.utils.toArray(".choose-card").forEach((card, i) => {
+  gsap.from(card, {
+    opacity: 0,
+    y: 40,
+    duration: 0.8,
+    delay: i * 0.2,
+    scrollTrigger: {
+      trigger: card,
+      start: "top 85%",
+    },
+  });
+});
+
+// ===== How it works ======
+gsap.registerPlugin(ScrollTrigger);
+
+// Heading animation
+gsap.from(".how-section-header > *", {
+  opacity: 0,
+  y: 30,
+  duration: 1,
+  stagger: 0.2,
+  ease: "power2.out",
+  scrollTrigger: {
+    trigger: ".how-section-header",
+    start: "top 85%",
+  },
+});
+
+// Card animation
+gsap.registerPlugin(ScrollTrigger);
+
+// Animate section heading
+gsap.from(".timeline-header > *", {
+  opacity: 0,
+  y: 30,
+  duration: 1,
+  stagger: 0.2,
+  scrollTrigger: {
+    trigger: ".timeline-header",
+    start: "top 80%",
+  },
+});
+
+gsap.utils.toArray(".timeline-step").forEach((step, i) => {
+  gsap.from(step, {
+    opacity: 0,
+    x: i % 2 === 0 ? -50 : 50,
+    duration: 1,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: step,
+      start: "top 85%",
+    },
+  });
+});
+
+// ===== use cases ======
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.utils.toArray(".capability-row").forEach((row, i) => {
+  const text = row.querySelector("h3");
+  const paragraph = row.querySelector("p");
+  const image = row.querySelector(".capability-image");
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: row,
+      start: "top 85%",
+    },
+  });
+
+  tl.from(text, {
+    opacity: 0,
+    x: -40,
+    duration: 0.8,
+  })
+    .from(
+      paragraph,
+      {
+        opacity: 0,
+        x: -20,
+        duration: 0.8,
+      },
+      "-=0.6"
+    )
+    .from(
+      image,
+      {
+        opacity: 0,
+        scale: 0.9,
+        duration: 1.1,
+        ease: "power2.out",
+      },
+      "-=0.8"
+    );
 });
