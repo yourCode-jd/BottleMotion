@@ -15,7 +15,7 @@ body {
 }
 
 body {
-    background-image: url(/assets/images/bg.jpeg);
+    /* background-image: url(/assets/images/bg.jpeg); */
     background-size: cover;
     background-blend-mode: soft-light;
     background-color: #BEBADE;
@@ -87,65 +87,4 @@ h3 span::after {
     height: 100%;
     background-color: #7a73d1;
     z-index: -1;
-}
-
-.glow-ring-bg {
-    border: 0px solid transparent;
-    border-top: 25px solid rgb(245 245 245 / 0%);
-    border-right: 25px solid rgb(245 245 245 / 0%);
-    border-radius: 46%;
-    animation: spinGlow 4s linear infinite reverse;
-    box-shadow: 0 0 60px rgb(171, 93, 196) inset;
-    width: 700px;
-    height: 700px;
-    opacity: 0.5;
-}
-
-@keyframes spinGlow {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(-360deg);
-    }
-}
-
-.glow-ring {
-    border: 0px solid transparent;
-    border-top: 15px solid rgb(245 245 245 / 0%);
-    border-right: 15px solid rgb(245 245 245 / 0%);
-    border-radius: 50%;
-    animation: spinGlow 4s linear infinite reverse;
-    box-shadow: 0 0 40px rgb(171, 93, 196) inset;
-    opacity: 0.3;
-}
-
-@keyframes spinGlow {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(-360deg);
-    }
-}
-
-/* snake border */
-
-.stroke-path {
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    animation: draw-border 4s linear infinite;
-    filter: drop-shadow(0 0 6px #9333ea);
-}
-
-@keyframes draw-border {
-    to {
-        stroke-dashoffset: 0;
-    }
-}
-
-.choose-card {
-    box-shadow: 0 0 60px 0px rgb(171 93 196 / 20%);
 }
