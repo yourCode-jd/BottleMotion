@@ -1,115 +1,91 @@
-// body overflow hidden
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
+  // --- GSAP & ScrollTrigger Setup ---
+  gsap.registerPlugin(ScrollTrigger);
+
+  // --- Menu & Body Overflow Logic ---
   const nav = document.getElementById("Hamburger");
-
-  nav.addEventListener("click", function () {
-    document.body.classList.toggle("overflow-hidden");
-  });
-});
-
-// toggle menu
-function toggleHighlight() {
-  const element = document.getElementById("slideNavigation");
-  element.classList.toggle("slideMenu");
-}
-
-// cursor
-
-const cursor = document.getElementById("customCursor");
-
-document.addEventListener("mousemove", (e) => {
-  gsap.to(cursor, {
-    x: e.clientX - 12,
-    y: e.clientY - 12,
-    duration: 0.2,
-    ease: "power2.out",
-  });
-});
-
-document.querySelectorAll("a, button, .hover-target").forEach((el) => {
-  el.addEventListener("mouseenter", () => {
-    cursor.classList.add("bg-white", "scale-150", "mix-blend-difference");
-  });
-  el.addEventListener("mouseleave", () => {
-    cursor.classList.remove("bg-white", "scale-150", "mix-blend-difference");
-  });
-});
-
-// Hero section
-
-gsap.registerPlugin(ScrollTrigger);
-
-window.addEventListener("load", () => {
-  document.fonts.ready.then(() => {
-    // Intro animation
-    gsap.from(".bottle", {
-      y: 120,
-      opacity: 0,
-      rotation: -5,
-      duration: 1.3,
-      ease: "power4.out",
+  const slideNavigation = document.getElementById("slideNavigation");
+  if (nav) {
+    nav.addEventListener("click", () => {
+      document.body.classList.toggle("overflow-hidden");
+      if (slideNavigation) {
+        slideNavigation.classList.toggle("slideMenu");
+      }
     });
-    gsap.from(".badge", {
-      opacity: 0,
-      rotation: 180,
-      scale: 0.8,
-      duration: 0.8,
-      ease: "back.out(1.7)",
-      delay: 0.5,
-    });
-    gsap.from(".text1", {
-      opacity: 0,
-      y: 40,
-      filter: "blur(8px)",
-      duration: 0.8,
-      delay: 0.6,
-    });
-    gsap.from(".text2", {
-      opacity: 0,
-      y: -40,
-      filter: "blur(8px)",
-      duration: 0.8,
-      delay: 0.8,
-    });
+  }
 
-    gsap.registerPlugin(ScrollTrigger);
-
-    const heroBottle = document.querySelector(".bottle");
-    const xMove = () =>
-      aboutImg.getBoundingClientRect().left -
-      heroImg.getBoundingClientRect().left;
-    const yMove = () =>
-      aboutImg.getBoundingClientRect().top -
-      heroImg.getBoundingClientRect().top;
-    const scaleFactor = () =>
-      aboutImg.getBoundingClientRect().width /
-      heroImg.getBoundingClientRect().width;
-    const dx = () =>
-      aboutImg.getBoundingClientRect().left -
-      heroImg.getBoundingClientRect().left;
-    const dy = () =>
-      aboutImg.getBoundingClientRect().top -
-      heroImg.getBoundingClientRect().top;
-
-    window.addEventListener("load", () => {
-      const x = dx();
-      const y = dy();
-
-      gsap.to(heroBottle, {
-        x: xMove,
-        y: yMove,
-        scale: scaleFactor,
-        ease: "none",
-        scrollTrigger: {
-          id: "bottleMove",
-          trigger: ".hero-section",
-          start: "top top",
-          endTrigger: ".three-col-section",
-          end: "top center",
-          scrub: true,
-          pin: true,
-        },
+  // --- Custom Cursor Logic ---
+  const cursor = document.getElementById("customCursor");
+  if (cursor) {
+    document.addEventListener("mousemove", (e) => {
+      gsap.to(cursor, {
+        x: e.clientX - 12,
+        y: e.clientY - 12,
+        duration: 0.2,
+        ease: "power2.out",
       });
+    });
+    document.querySelectorAll("a, button, .hover-target").forEach((el) => {
+      el.addEventListener("mouseenter", () => {
+        cursor.classList.add("bg-white", "scale-150", "mix-blend-difference");
+      });
+      el.addEventListener("mouseleave", () => {
+        cursor.classList.remove(
+          "bg-white",
+          "scale-150",
+          "mix-blend-difference"
+        );
+      });
+    });
+  }
+
+  // --- Hero Section Animation Logic ---
+  gsap.registerPlugin(ScrollTrigger);
+
+  const bottleHero = document.querySelector("#bottleHero");
+  const bottleTarget = document.querySelector(
+    "#bottleTarget .bottle-target-inner"
+  );
+
+  // function to calculate target coords
+  const dx = () =>
+    bottleTarget.getBoundingClientRect().left -
+    bottleHero.getBoundingClientRect().left;
+  const dy = () =>
+    bottleTarget.getBoundingClientRect().top -
+    bottleHero.getBoundingClientRect().top;
+
+  window.addEventListener("load", () => {
+    // animate bottle hero → center target
+    gsap.to(bottleHero, {
+      x: dx,
+      y: dy,
+      scale: 0.9,
+      rotate: 360,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".three-col-section",
+        start: "top bottom",
+        end: "top top+=200",
+        scrub: 2,
+        markers: false,
+        onRefresh: (self) => {
+          self.animation.invalidate(); // recalc dx/dy on resize
+        },
+      },
+    });
+
+    // fade in side content
+    gsap.to(".side-left, .side-right", {
+      opacity: 1,
+      y: 0,
+      duration: 1.2,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".three-col-section",
+        start: "top center",
+        toggleActions: "play none none reverse",
+      },
     });
   });
 });

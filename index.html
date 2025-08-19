@@ -34,7 +34,7 @@
 
     <!-- Main -->
     <!-- Header -->
-    <header class="p-0 fixed top-0 left-0 w-full z-10">
+    <header class="p-0 fixed top-0 left-0 w-full z-20">
         <div class="px-5 md:px-8 lg:px-12">
 
             <!-- Navigation -->
@@ -60,14 +60,11 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero-section relative flex items-center justify-center h-screen px-4 sm:px-6">
-        <div class="fixed inset-0 w-[800px] h-[800px] m-auto rotate-12">
+    <section class="hero-section flex items-center justify-center h-screen px-4 sm:px-6 relative">
+        <div id="bottleHero" class="bottle-container inset-0 absolute w-[800px] h-[800px] m-auto z-10">
             <img src="/assets/images/bottel.png" alt="Bottle" class="bottle w-full h-full object-contain">
-            <div class="absolute inset-0 w-h-32 h-32 m-auto rotate-12">
-                <img src="/assets/images/badge.svg" alt="Badge" class="badge w-full h-full object-contain">
-            </div>
         </div>
+
         <h1 class="text-center text-4xl font-extrabold uppercase sm:text-5xl lg:text-[130px] gap-40 flex">
             <div class="absolute left-48 top-60 text-left text-[#811100] font-bold tracking-wider text1">
                 Designed<br>Refresh
@@ -78,25 +75,26 @@
         </h1>
     </section>
 
-    <!-- Three Column Section -->
-    <section class="three-col-section relative h-screen flex items-center px-10">
-        <!-- Left Column -->
-        <div class="flex-1 text-left pr-8">
-            <h2 class="text-4xl font-bold text-[#811100] mb-4">Naturally Refreshing</h2>
-            <p class="text-lg text-gray-700 leading-relaxed">
+    <section class="three-col-section h-screen relative flex">
+        <!-- left content -->
+        <div
+            class="flex-1 text-center p-8 bg-[#8C1007] h-full flex flex-col justify-center items-center side-left opacity-0 translate-y-10">
+            <h2 class="text-4xl font-bold text-white mb-4">Naturally Refreshing</h2>
+            <p class="text-lg text-white leading-relaxed max-w-xl">
                 Crafted with real fruit extracts and a touch of fizz for the ultimate thirst-quenching experience.
             </p>
         </div>
 
-        <!-- Center Column -->
-        <div class="inset-0 w-[800px] h-[800px] m-auto rotate-12 flex-1 flex justify-center center-target ">
-            <!-- Bottle will move here -->
+        <!-- absolute centered target -->
+        <div id="bottleTarget" class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+            <div class="bottle-target-inner w-[800px] h-[800px]"></div>
         </div>
 
-        <!-- Right Column -->
-        <div class="flex-1 text-left pl-8">
+        <!-- right content -->
+        <div
+            class="flex-1 text-center p-8 bg-[#FFF] h-full flex flex-col justify-center items-center side-right opacity-0 translate-y-10">
             <h2 class="text-4xl font-bold text-[#811100] mb-4">Unmatched Taste</h2>
-            <p class="text-lg text-gray-700 leading-relaxed">
+            <p class="text-lg text-[#811100] leading-relaxed max-w-xl">
                 Every sip bursts with vibrant flavors and leaves you feeling instantly refreshed.
             </p>
         </div>
@@ -104,13 +102,9 @@
 
 
 
-
-
-
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/gsap@3/dist/Flip.min.js"></script>
     <script src="/custom.js"></script>
 </body>
 
