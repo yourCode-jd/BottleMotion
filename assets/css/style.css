@@ -92,3 +92,7 @@ h3 span::after {
     will-change: transform;
     backface-visibility: hidden;
 }
+
+#bottleHero {
+    transform-origin: center center;
+}

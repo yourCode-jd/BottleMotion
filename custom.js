@@ -1,91 +1,171 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // --- GSAP & ScrollTrigger Setup ---
-  gsap.registerPlugin(ScrollTrigger);
+// --- GSAP & ScrollTrigger Setup ---
+gsap.registerPlugin(ScrollTrigger);
 
-  // --- Menu & Body Overflow Logic ---
-  const nav = document.getElementById("Hamburger");
-  const slideNavigation = document.getElementById("slideNavigation");
-  if (nav) {
-    nav.addEventListener("click", () => {
-      document.body.classList.toggle("overflow-hidden");
-      if (slideNavigation) {
-        slideNavigation.classList.toggle("slideMenu");
-      }
+// --- Menu & Body Overflow Logic ---
+const nav = document.getElementById("Hamburger");
+const slideNavigation = document.getElementById("slideNavigation");
+if (nav) {
+  nav.addEventListener("click", () => {
+    document.body.classList.toggle("overflow-hidden");
+    if (slideNavigation) {
+      slideNavigation.classList.toggle("slideMenu");
+    }
+  });
+}
+
+// --- Custom Cursor Logic ---
+const cursor = document.getElementById("customCursor");
+if (cursor) {
+  document.addEventListener("mousemove", (e) => {
+    gsap.to(cursor, {
+      x: e.clientX - 12,
+      y: e.clientY - 12,
+      duration: 0.2,
+      ease: "power2.out",
     });
-  }
-
-  // --- Custom Cursor Logic ---
-  const cursor = document.getElementById("customCursor");
-  if (cursor) {
-    document.addEventListener("mousemove", (e) => {
-      gsap.to(cursor, {
-        x: e.clientX - 12,
-        y: e.clientY - 12,
-        duration: 0.2,
-        ease: "power2.out",
-      });
+  });
+  document.querySelectorAll("a, button, .hover-target").forEach((el) => {
+    el.addEventListener("mouseenter", () => {
+      cursor.classList.add("bg-white", "scale-150", "mix-blend-difference");
     });
-    document.querySelectorAll("a, button, .hover-target").forEach((el) => {
-      el.addEventListener("mouseenter", () => {
-        cursor.classList.add("bg-white", "scale-150", "mix-blend-difference");
-      });
-      el.addEventListener("mouseleave", () => {
-        cursor.classList.remove(
-          "bg-white",
-          "scale-150",
-          "mix-blend-difference"
-        );
-      });
+    el.addEventListener("mouseleave", () => {
+      cursor.classList.remove("bg-white", "scale-150", "mix-blend-difference");
     });
-  }
+  });
+}
 
-  // --- Hero Section Animation Logic ---
-  gsap.registerPlugin(ScrollTrigger);
+// ========================================================================== \\
 
-  const bottleHero = document.querySelector("#bottleHero");
-  const bottleTarget = document.querySelector(
-    "#bottleTarget .bottle-target-inner"
+// --- Hero Section Animation Logic ---
+gsap.registerPlugin(ScrollTrigger);
+
+// HERO BOTTLE & TARGETS
+const bottleHero = document.querySelector("#bottleHero");
+const bottleTarget = document.querySelector(
+  ".three-col-section #bottleTarget .bottle-target-inner"
+);
+const bottleTarget2 = document.querySelector(
+  ".multiple-products #bottleTarget2 .bottle-target-inner"
+);
+
+// Center-to-center calculations
+function getDx(target) {
+  return (
+    target.getBoundingClientRect().left +
+    target.offsetWidth / 2 -
+    (bottleHero.getBoundingClientRect().left + bottleHero.offsetWidth / 2)
   );
+}
+function getDy(target) {
+  return (
+    target.getBoundingClientRect().top +
+    target.offsetHeight / 2 -
+    (bottleHero.getBoundingClientRect().top + bottleHero.offsetHeight / 2)
+  );
+}
 
-  // function to calculate target coords
-  const dx = () =>
-    bottleTarget.getBoundingClientRect().left -
-    bottleHero.getBoundingClientRect().left;
-  const dy = () =>
-    bottleTarget.getBoundingClientRect().top -
-    bottleHero.getBoundingClientRect().top;
+window.addEventListener("load", () => {
+  // Hero entry animation
+  gsap.from(bottleHero, {
+    opacity: 0,
+    x: -1000,
+    rotate: -360,
+    scale: 1,
+    duration: 1.2,
+    ease: "power3.out",
+  });
+  gsap.from(".hero-left", {
+    opacity: 0,
+    y: -300,
+    duration: 1,
+    delay: 0.3,
+    ease: "power2.out",
+  });
+  gsap.from(".hero-right", {
+    opacity: 0,
+    y: 300,
+    duration: 1,
+    delay: 0.3,
+    ease: "power2.out",
+  });
 
-  window.addEventListener("load", () => {
-    // animate bottle hero → center target
-    gsap.to(bottleHero, {
-      x: dx,
-      y: dy,
-      scale: 0.9,
-      rotate: 360,
+  // Side content animations
+  gsap.fromTo(
+    ".three-col-section .side-left",
+    { x: -350, opacity: 0 },
+    {
+      x: 0,
+      opacity: 1,
+      duration: 1.2,
       ease: "power3.out",
       scrollTrigger: {
         trigger: ".three-col-section",
-        start: "top bottom",
-        end: "top top+=200",
-        scrub: 2,
-        markers: false,
-        onRefresh: (self) => {
-          self.animation.invalidate(); // recalc dx/dy on resize
-        },
-      },
-    });
-
-    // fade in side content
-    gsap.to(".side-left, .side-right", {
-      opacity: 1,
-      y: 0,
-      duration: 1.2,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".three-col-section",
-        start: "top center",
+        start: "top 70%",
         toggleActions: "play none none reverse",
       },
-    });
+    }
+  );
+  gsap.fromTo(
+    ".three-col-section .side-right",
+    { x: 350, opacity: 0 },
+    {
+      x: 0,
+      opacity: 1,
+      duration: 1.2,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".three-col-section",
+        start: "top 70%",
+        toggleActions: "play none none reverse",
+      },
+    }
+  );
+
+  // === Hero bottle timeline (single timeline for both sections) ===
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".three-col-section",
+      start: "top bottom",
+      end: () => "+=" + window.innerHeight * 2, // covers both sections
+      scrub: true,
+      invalidateOnRefresh: true,
+    },
   });
+
+  // Hero → three-col target
+  tl.to(bottleHero, {
+    x: () => getDx(bottleTarget),
+    y: () => getDy(bottleTarget),
+    scale: 1,
+    rotate: 360,
+    ease: "none",
+  });
+
+  // Pause at three-col section (user must scroll further)
+  tl.to(bottleHero, {}, "+=0.01");
+
+  // Three-col → multiple-products target
+  tl.to(bottleHero, {
+    x: () => getDx(bottleTarget2),
+    y: () => getDy(bottleTarget2),
+    scale: 1,
+    rotate: 720,
+    ease: "none",
+  });
+
+  ScrollTrigger.refresh();
 });
+
+// === Lenis smooth scroll ===
+const lenis = new Lenis({
+  lerp: 0.08,
+  duration: 1,
+  wheelMultiplier: 1.1,
+  touchMultiplier: 1.2,
+});
+function raf(time) {
+  lenis.raf(time);
+  ScrollTrigger.update();
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
