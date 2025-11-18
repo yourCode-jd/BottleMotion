@@ -7,7 +7,7 @@ Interactive landing page showcasing a beverage bottle with smooth GSAP scroll an
 
 ## 🚀 Github Demo
 
-[View Here](https://yourcode-jd.github.io/drinkBottel/)
+[View Here](https://yourcode-jd.github.io/BottleMotion/)
 
 ---
 
